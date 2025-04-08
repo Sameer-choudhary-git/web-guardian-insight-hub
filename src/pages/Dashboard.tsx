@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,12 +9,17 @@ import { getDashboardStats } from '@/data/mockData';
 const Dashboard = () => {
   const stats = getDashboardStats();
 
+  // Set the document title using the standard DOM API
+  React.useEffect(() => {
+    document.title = "Dashboard | Web Guardian";
+    return () => {
+      // Optional cleanup when component unmounts
+      document.title = "Web Guardian";
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background px-4 py-8 md:px-8 max-w-7xl mx-auto">
-      <Helmet>
-        <title>Dashboard | Web Guardian</title>
-      </Helmet>
-
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Advanced Dashboard</h1>
         <Button variant="outline">
