@@ -8,7 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Appbar from "./components/Appbar";
 const queryClient = new QueryClient();
-import Home from "./pages/home";
+import Home from "./pages/Home";
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
