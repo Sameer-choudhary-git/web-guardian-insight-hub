@@ -2,22 +2,22 @@
 import React from 'react';
 
 interface StatusTimelineProps {
-  statuses: ('online' | 'offline' | 'warning' | 'issue')[];
+  statuses: ('good' | 'bad' | 'warning' | 'issue')[];
 }
 
 const StatusTimeline = ({ statuses }: StatusTimelineProps) => {
   const getStatusColor = (status: string) => {
     switch(status) {
-      case 'online':
+      case 'good':
         return 'bg-alert-low';
-      case 'offline':
+      case 'bad':
         return 'bg-alert-critical';
       case 'warning':
         return 'bg-alert-high';
       case 'issue':
         return 'bg-alert-medium';
       default:
-        return 'bg-gray-300';
+        return 'bg-gray-500';
     }
   };
 

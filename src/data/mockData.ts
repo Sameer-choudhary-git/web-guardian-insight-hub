@@ -22,7 +22,7 @@ const generateResponseTimeData = (count: number, baseValue: number, variance: nu
 };
 
 // Mock website data
-export const mockWebsites: Website[] = [
+export const mockWebsites: any[] = [
   {
     id: '1',
     url: 'http://google.com',

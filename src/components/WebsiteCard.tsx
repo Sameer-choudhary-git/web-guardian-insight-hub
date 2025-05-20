@@ -8,15 +8,18 @@ import StatusTimeline from './StatusTimeline';
 import { Website } from '@/types/website';
 import SecurityIndicator from './SecurityIndicator';
 import ResponseTimeChart from './ResponseTimeChart';
+import { useWebsites } from '@/hooks/useWebsites';
 
 interface WebsiteCardProps {
-  website: Website;
+  // any hardcoded for now
+  website: any;
   onDelete: (websiteId: string) => void;
 }
 
 const WebsiteCard = ({ website, onDelete }: WebsiteCardProps) => {
   const [expanded, setExpanded] = useState(false);
   const { toast } = useToast();
+  const { fetchWebsites } = useWebsites();
 
   const handleDelete = () => {
     onDelete(website.id);
@@ -24,17 +27,18 @@ const WebsiteCard = ({ website, onDelete }: WebsiteCardProps) => {
       title: "Website removed",
       description: `${website.url} has been removed from monitoring.`,
     });
+    // refresh the website list
+    fetchWebsites();
+
   };
 
   const getStatusDot = () => {
-    if (website.uptime >= 99) {
+    if (website.status === "good") {
       return <span className="status-dot online"></span>;
-    } else if (website.uptime >= 95) {
-      return <span className="status-dot issue"></span>;
-    } else if (website.uptime >= 90) {
-      return <span className="status-dot warning"></span>;
-    } else {
+    } else if (website.status === "bad") {
       return <span className="status-dot offline"></span>;
+    } else {
+      return <span className="status-dot bg-gray-500"></span>;
     }
   };
 
@@ -52,7 +56,7 @@ const WebsiteCard = ({ website, onDelete }: WebsiteCardProps) => {
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground mr-2">
-            {website.uptime.toFixed(1)}% uptime • latency: {website.latency}ms
+            {website.uptimePercentage}% uptime • latency: {website.latency}ms
           </span>
           <Button
             size="sm"
@@ -69,7 +73,7 @@ const WebsiteCard = ({ website, onDelete }: WebsiteCardProps) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <h3 className="text-sm font-medium mb-1 text-muted-foreground">Last 30 minutes status</h3>
-              <StatusTimeline statuses={website.statusHistory} />
+              <StatusTimeline statuses={website.uptimeTicks} />
               <p className="text-xs text-muted-foreground mt-2">
                 Last checked: {website.lastChecked}
               </p>
@@ -109,7 +113,7 @@ const WebsiteCard = ({ website, onDelete }: WebsiteCardProps) => {
 
           <div className="flex justify-between mt-4 pt-4 border-t border-border">
             <div className="flex gap-2">
-              <Button size="sm" variant="outline">
+              <Button size="sm" variant="outline" onClick={() => window.open(website.url, '_blank')}>
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Visit Site
               </Button>

@@ -3,6 +3,7 @@ export interface Website {
   id: string;
   url: string;
   uptime: number;
+  currentStatus: string;
   latency: number;
   lastChecked: string;
   statusHistory: ('online' | 'offline' | 'warning' | 'issue')[];
